@@ -25,6 +25,7 @@ v-else-if充当v-if的else-if块，可以链式的使用多次，可以更加方
 遍历数组来进行渲染，有下面两种遍历形式
 使用for...in :`<div v-for="(item,index) in items"></div>`  //index是一个可选参数，表示当前项的索引;
 使用for...of : `<div v-for=”item of items”></div>`
+为保证对象唯一性，可用:key="item.id"来绑定，key绑定的值可以是number/string
 在v-for中，拥有对父作用域属性的完全访问权限
 注意：当v-for和v-if同处于一个节点时，v-for的优先级比v-if更高。这意味着v-if将运行在每个v-for循环中。
 ###### （11）v-bind
@@ -78,7 +79,7 @@ v-model修饰符
 
 ###### （13）v-on
 用于监听dom事件，然后执行某些操作，简写为@，v-on:click等价于@click。表达式可以是一个方法名
-事件修饰符
+###### 事件修饰符
 （1） .stop 防止事件冒泡，相当于js中的event.stopPropagation();
 （2） .capture 与事件冒泡方向相反，事件捕获由外到内
 （3） .once 只会触发一次
@@ -106,3 +107,14 @@ v-model修饰符
 </script>
 ```
 （2）使用v-bind来绑定属性
+&emsp;
+***
+## 4.过滤器
+#### 1.过滤器调用时的格式
+`{{data | 过滤器的名称(参数)}}`
+| 是管道操作符
+#### 2.过滤器的定义方式
+`Vue.filter('过滤器的名称',function(data){});`
+* 过滤器中的function的第一个参数是要处理的数据(过滤器管道符前面传递过来的数据)，后面的参数是过滤器传过来的参数
+* 可以调用多个过滤器，会依次调用
+`{{msg}}`
