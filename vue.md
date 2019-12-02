@@ -117,4 +117,31 @@ v-model修饰符
 `Vue.filter('过滤器的名称',function(data){});`
 * 过滤器中的function的第一个参数是要处理的数据(过滤器管道符前面传递过来的数据)，后面的参数是过滤器传过来的参数
 * 可以调用多个过滤器，会依次调用
-`{{msg}}`
+`{{msg | filter1 | filter2}}`
+#### 3.全局过滤器和私有过滤器
+* 全局过滤器：`Vue.filter('filterName',function(){})`
+* 私有过滤器：写在filters对象内：`filters:{ filter1(){}}`
+* 优先调用私有过滤器
+&emsp;
+***
+## 5.键盘修饰符
+#### 1.用法
+* 为键盘事件绑定按键，点击按键时触发事件
+例如 @keydown.enter="add",按下回车执行时间
+#### 2.按键修饰符
+|按键修饰符|别名|
+|-|-|
+|.enter|回车|
+|.tab|tab键|
+|.delete|删除键|
+|.esc|esc键|
+|.space|空格键|
+|.up|上|
+|.down|下|
+|.left|左|
+|.right|右|
+#### 3.也可以使用键盘码
+例如f2的键盘码为113，则@keydown.113="add"等价于@keydown.f2="add"
+#### 4.自定义全局按键修饰符
+`Vue.config.keyCodes.f2 = 113`
+
