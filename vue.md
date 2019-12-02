@@ -86,6 +86,42 @@ v-model修饰符
 （4） .self 只会触发自己范围内的事件，不包含子元素
 （5） .prevent 拦截默认事件，相当于js中的event.preventDefault()。例如可以阻止表单提交是页面刷新等浏览器默认行为
 （6） .passive 执行默认方法。一般用在滚动监听，@scoll,@touchmove。因为在滚动过程中，移动每个像素都会产生一次事件，每次都使用内核线程查询prevent会使滑动卡顿，，我们可以通过passive将内核线程查询跳过，可以大大提高滑动的流畅度。
+
+###### （13）自定义指令
+`Vue.directive('指令名',{})`
+* 第一个参数是指令名，不需要加`v-`修饰符，但是调用的时候需要加
+* 第二个参数是一个对象，这个对象身上有一些指令相关的钩子函数，这些函数可以在对应的阶段执行相关的操作
+```
+Vue.directive('指令名',{
+bind: function(){//每当指令绑定到元素上的时候，会立即执行这个bind函数，只执行一次
+//更改样式只需要写到bind中
+},
+inserted: function(el){表示元素插入到dom中的时候会执行
+el.focus()
+//每个函数第一个参数永远是el，表示被绑定了指令的那个元素，这个el参数，是一个原生的js对象，拥有元素js操作dom的方法
+//与js相关的最好写在inserted中，防止Js行为不生效
+},
+update: function(){当VNode更新的时候，会执行update,可能会触发多次
+}
+})
+```
+钩子函数的参数
+* el：第一个参数，绑定的dom元素
+* binding :第二个参数
+   * binding.name:指令名
+   * binding.value:指令的绑定值
+   * binding.expression:绑定值的字符串形式
+###### 自定义私有指令
+directives对象中
+```
+directives:{
+  'fontweight':{
+    bind: function(el){
+      el.style.fontWeight = 700
+    }
+  }
+}
+```
 &emsp;
 ***
 
