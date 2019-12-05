@@ -181,3 +181,26 @@ directives:{
 #### 4.自定义全局按键修饰符
 `Vue.config.keyCodes.f2 = 113`
 
+&emsp;
+***
+## 6.vue的生命周期钩子函数
+### 1.什么是生命周期
+从Vue实例创建、运行、到销毁期间，总是伴随着各种各样的事件，这些事件，统称为生命周期。别名也叫生命周期钩子。
+### 2.主要的生命周期函数分类
+- 创建期间
+
+  - beforeCreate：创建之前。实例刚在内存中被创建出来，此时，data和methods还没有初始化好；
+  - created：创建后。可以操作data和调用methods的最早阶段，此时模板还未被编译；
+  - beforeMount：挂载之前。开始编译模板，在内存中生成一个编译好的模板字符串，渲染为内存中的dom。此时，只是在内存中渲染好了模板，并没有把模板挂载到页面中去；
+  - Mounted：挂载后。将模板挂载到页面，完成真实的渲染。创建阶段结束。
+- 运行期间
+
+  - beforeUpdate：更新前。data改变才会触发。data更新，页面还未更新，页面和数据还未同步。
+  - updated：更新后。data改变才会触发。data更新，页面也更新了，页面和数据同步了。
+- 销毁期间
+
+  - beforeDestory：销毁前。实例身上所有的data，methods,filters,directives...都还处于可用状态，实例还未被销毁。
+  - destoryed：销毁后。组件已经被完全销毁了。组件中所有的东西都不可用了。
+
+图示：
+![Vue-lifeCycle](https://cn.vuejs.org/images/lifecycle.png)
