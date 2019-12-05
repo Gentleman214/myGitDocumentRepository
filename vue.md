@@ -326,9 +326,29 @@ var vm = new Vue({
 })
 </script>
 ```
-### 5.使用transition-group元素实现列表动画(用v-for循环出来的必须用这个transition-group来实现动画)
+### 5.使用transition-group元素实现列表添加删除动画(用v-for循环出来的必须用这个transition-group来实现动画)
 ```html
 <transition-group>
   <li v-for="item in list" :key="item.id">{{item.name}}</li>
 </transition-group>
 ```
+```css
+    .v-enter,
+    .v-leave-to{
+        opacity: 0;
+        transform: translateY(80px);
+    }
+
+    .v-enter-active,
+    .v-leave-active{
+        transition: all 1s ease;
+    }
+
+    .v-move{
+        transition: all 1s ease;
+    }
+    .v-leave-active{
+        position: absolute;
+    }
+```
+
