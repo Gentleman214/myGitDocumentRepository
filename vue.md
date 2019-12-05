@@ -33,7 +33,7 @@ v-else-if充当v-if的else-if块，可以链式的使用多次，可以更加方
 1.	属性绑定
 v-bind:name=”name”  //引号内的属性定义在data中，注意是引号而不是花括号
 2.	内联字符串拼接
-```
+```javascript
 <a :herf=”‘http://’+addr”>跳转到百度</a>
 data:{
 addr:”www.baidu.com”
@@ -91,7 +91,7 @@ v-model修饰符
 `Vue.directive('指令名',{})`
 * 第一个参数是指令名，不需要加`v-`修饰符，但是调用的时候需要加
 * 第二个参数是一个对象，这个对象身上有一些指令相关的钩子函数，这些函数可以在对应的阶段执行相关的操作
-```
+```javascript
 Vue.directive('指令名',{
 bind: function(){//每当指令绑定到元素上的时候，会立即执行这个bind函数，只执行一次
 //更改样式只需要写到bind中
@@ -113,7 +113,7 @@ update: function(){当VNode更新的时候，会执行update,可能会触发多�
    * binding.expression:绑定值的字符串形式
 ###### 自定义私有指令
 directives对象中
-```
+```javascript
 directives:{
   'fontweight':{
     bind: function(el){
@@ -129,9 +129,10 @@ directives:{
 不使用return包裹的数据会在项目的全局可见，会造成变量污染；使用return包裹后数据中变量只在当前组件中生效，不会影响其他组件。
 &emsp;
 ***
+
 ## 3.	声明式渲染
 （1）采用模板语法声明式地将数据渲染到Dom系统
-```
+```javascript
 <div id=”app”>{{message}}</div>
 <script>
     var app = new Vue({
@@ -143,28 +144,30 @@ directives:{
 </script>
 ```
 （2）使用v-bind来绑定属性
+
 &emsp;
 ***
 ## 4.过滤器
-#### 1.过滤器调用时的格式
+### 1.过滤器调用时的格式
 `{{data | 过滤器的名称(参数)}}`
 | 是管道操作符
-#### 2.过滤器的定义方式
+### 2.过滤器的定义方式
 `Vue.filter('过滤器的名称',function(data){});`
 * 过滤器中的function的第一个参数是要处理的数据(过滤器管道符前面传递过来的数据)，后面的参数是过滤器传过来的参数
 * 可以调用多个过滤器，会依次调用
 `{{msg | filter1 | filter2}}`
-#### 3.全局过滤器和私有过滤器
+### 3.全局过滤器和私有过滤器
 * 全局过滤器：`Vue.filter('filterName',function(){})`
 * 私有过滤器：写在filters对象内：`filters:{ filter1(){}}`
 * 优先调用私有过滤器
+* 
 &emsp;
 ***
 ## 5.键盘修饰符
-#### 1.用法
+### 1.用法
 * 为键盘事件绑定按键，点击按键时触发事件
 例如 @keydown.enter="add",按下回车执行时间
-#### 2.按键修饰符
+### 2.按键修饰符
 |按键修饰符|别名|
 |-|-|
 |.enter|回车|
@@ -176,9 +179,9 @@ directives:{
 |.down|下|
 |.left|左|
 |.right|右|
-#### 3.也可以使用键盘码
+### 3.也可以使用键盘码
 例如f2的键盘码为113，则@keydown.113="add"等价于@keydown.f2="add"
-#### 4.自定义全局按键修饰符
+### 4.自定义全局按键修饰符
 `Vue.config.keyCodes.f2 = 113`
 
 &emsp;
@@ -204,3 +207,35 @@ directives:{
 
 图示：
 ![Vue-lifeCycle](https://github.com/Gentleman214/myGitDocumentRepository/blob/master/image-storage/vue/vue-lifeCycle.png)
+
+&emsp;
+***
+## 7.使用vue-resource发起get,post,jsonp请求
+要先引入vue-resource.js
+```javascript
+//get请求
+this.$http.get('url',{}).then(function(result){
+  console.log(result.body);
+})
+
+//post请求  表单格式：application/x-www-form-urlencoded
+//通过第三个参数设置提交的格式
+this.$http.post('url',{},{ emulateJSON:true }).then(result => {
+  console.log(result);
+})
+
+//jsonp请求
+this.$http.jsonp('url',{}).then(result => {
+  console.log(result.body);
+})
+```
+- 全局配置
+##### 1.接口请求的根域名
+```javascript
+Vue.http.options.root = 'http://localhost:8080/'
+this.$http.get('api/getUserInfo').then() //注意此时url的api前面不能加/,否则不会启用根路径做拼接
+```
+##### 2.全局启用emulateJSON
+` Vue.http.options.emulateJSON = true `
+
+## 8.vue中的动画
