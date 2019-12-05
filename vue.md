@@ -203,4 +203,4 @@ directives:{
   - destoryed：销毁后。组件已经被完全销毁了。组件中所有的东西都不可用了。
 
 图示：
-![Vue-lifeCycle](https://cn.vuejs.org/images/lifecycle.png)
+![Vue-lifeCycle](https://github.com/Gentleman214/myGitDocumentRepository/blob/master/image-storage/vue/vue-lifeCycle.png)
