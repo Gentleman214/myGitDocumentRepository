@@ -326,9 +326,13 @@ var vm = new Vue({
 })
 </script>
 ```
-### 5.使用transition-group元素实现列表添加删除动画(用v-for循环出来的必须用这个transition-group来实现动画)
+### 5.使用transition-group元素实现列表添加删除动画
+- 用v-for循环出来的必须用这个transition-group来实现动画
+- 要为v-for循环的元素设置动画，必须写`:key`
+- 给transition-group添加appear属性，能实现页面展示出来的时候的入场动画
+- transition-group默认解析为span便签,span下面放ul不合理，所以用`tag="ul"`来指定transition-group解析为ul标签
 ```html
-<transition-group>
+<transition-group appear tag="ul">
   <li v-for="item in list" :key="item.id">{{item.name}}</li>
 </transition-group>
 ```
