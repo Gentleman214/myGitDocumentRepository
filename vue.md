@@ -239,3 +239,96 @@ this.$http.get('api/getUserInfo').then() //注意此时url的api前面不能加/
 ` Vue.http.options.emulateJSON = true `
 
 ## 8.vue中的动画
+### 1.使用过渡类名来实现动画
+（1）使用`transition`元素，把需要被动画控制的元素包裹起来
+（2）自定义两组样式来控制transition内部的元素来实现动画
+```css
+.v-enter,   /*进入之前，元素状态*/
+.v-leave-to{     /*离开之后，终止状态*/
+    transform: translateX(150px);
+}
+
+.v-enter-active,   /*入场动画的时间段*/
+.v-enter-active{    /*离场动画的时间*/
+    transition: all 0.4s ease;
+}
+```
+缺点：所有过渡动画都共享这一套样式，所以要自定义v-前缀
+### 2.自定义过渡动画样式的v-前缀，使其只应用在指定transition元素上
+（1）`transition`元素加上name属性；
+（2）把样式中的v-替换成name的值
+```html
+<transition name='my'></transition>
+```
+```css
+.my-enter,.my-leave-to{}
+.my-enter-active,.my-leave-active{}
+```
+### 3.使用第三方类来实现动画
+例如使用animate.css来实现
+```html
+<link href='./animate.css'>
+<!-- 入场动画使用bounceIn 出场动画使用bounceOut-->
+<!-- 使用:duration="毫秒值"来统一设置入场和离场的动画时长-->
+<!-- 使用:duration="{enter：n ,leave：n }"来分别设置入场和离场的动画时长-->
+<transition 
+  enter-active-class="animated bounceIn" 
+  leave-active-class="animated bounceOut" 
+  ：duration='{ enter:200,leave:400}'
+ >
+<h3 v-if="flag">动画标题</h3>
+</transition>
+```
+###  4.钩子函数实现半场动画
+小球的半场动画
+```html
+<div id="app" class="div">
+  <transition
+    @before-enter="beforeEnter"
+    @enter="enter"
+    @after-enter="afterEnter"
+  >
+    <div class="ball" v-show="flag"></div>
+  </transition>
+  <input type="button" value="快到碗里来" @click="flag=!flag" style="position: absolute;top: 150px;left: 50px">
+</div>
+```
+```css
+.ball{
+  width: 15px;
+  height: 15px;
+  background-color: red;
+  border-radius: 50%;
+}
+```
+```js
+<script>
+var vm = new Vue({
+  el:'#app',
+  data:{
+    flag:false
+  },
+  methods:{
+    //el表示要执行动画的那个DOM元素
+    beforeEnter(el){ //动画入场之前，可以设置元素动画起始之前的样式
+      el.style.transform = "translate(0,0)"
+    },
+    enter(el,done){  //动画开始之后的样式
+      el.offsetWidth  //如果不写没有动画效果 el.offsetHeight/el.offsetWidth/el.offsetLeft/el.offsetRight都可以
+      el.style.transform = "translate(50px,150px)"
+      el.style.transition = "all 1s ease"
+      done()
+    },
+    afterEnter(el){
+      this.flag = !this.flag
+    }
+  }
+})
+</script>
+```
+### 5.使用transition-group元素实现列表动画
+```html
+<transition-group>
+  <li v-for="item in list" :key="item.id">{{item.name}}</li>
+</transition-group>
+```
