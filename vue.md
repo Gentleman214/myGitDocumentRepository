@@ -238,6 +238,8 @@ this.$http.get('api/getUserInfo').then() //注意此时url的api前面不能加/
 ##### 2.全局启用emulateJSON
 ` Vue.http.options.emulateJSON = true `
 
+&emsp;
+***
 ## 8.vue中的动画
 ### 1.使用过渡类名来实现动画
 （1）使用`transition`元素，把需要被动画控制的元素包裹起来
