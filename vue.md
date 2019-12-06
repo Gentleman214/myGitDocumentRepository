@@ -1,6 +1,6 @@
 # vue
 ***
-## 1.	vue指令大全
+# 1.	vue指令大全
 带有前缀v-的称为vue的指令
 ###### （1）v-text
 用来更新textContent,等同于JS的text属性。例如`<p v-text=’msg’></p>`等价于`<p>{{msg}}</p>`
@@ -124,30 +124,7 @@ directives:{
 ```
 &emsp;
 ***
-
-## 2.	为啥项目中data需要使用return返回数据呢？
-不使用return包裹的数据会在项目的全局可见，会造成变量污染；使用return包裹后数据中变量只在当前组件中生效，不会影响其他组件。
-&emsp;
-***
-
-## 3.	声明式渲染
-（1）采用模板语法声明式地将数据渲染到Dom系统
-```javascript
-<div id=”app”>{{message}}</div>
-<script>
-    var app = new Vue({
-        el: '#app',   //el表示Vue实例挂载的元素节点，值可以是CSS选择符，或实际的HTML元素，或返回html元素的函数
-        data: {
-            message: 'Hello Vue!'
-        }
-    })
-</script>
-```
-（2）使用v-bind来绑定属性
-
-&emsp;
-***
-## 4.过滤器
+# 2.过滤器
 ### 1.过滤器调用时的格式
 `{{data | 过滤器的名称(参数)}}`
 | 是管道操作符
@@ -160,10 +137,10 @@ directives:{
 * 全局过滤器：`Vue.filter('filterName',function(){})`
 * 私有过滤器：写在filters对象内：`filters:{ filter1(){}}`
 * 优先调用私有过滤器
-* 
+
 &emsp;
 ***
-## 5.键盘修饰符
+# 3.键盘修饰符
 ### 1.用法
 * 为键盘事件绑定按键，点击按键时触发事件
 例如 @keydown.enter="add",按下回车执行时间
@@ -186,7 +163,7 @@ directives:{
 
 &emsp;
 ***
-## 6.vue的生命周期钩子函数
+# 4.vue的生命周期钩子函数
 ### 1.什么是生命周期
 从Vue实例创建、运行、到销毁期间，总是伴随着各种各样的事件，这些事件，统称为生命周期。别名也叫生命周期钩子。
 ### 2.主要的生命周期函数分类
@@ -210,7 +187,7 @@ directives:{
 
 &emsp;
 ***
-## 7.使用vue-resource发起get,post,jsonp请求
+# 5.使用vue-resource发起get,post,jsonp请求
 要先引入vue-resource.js
 ```javascript
 //get请求
@@ -240,7 +217,7 @@ this.$http.get('api/getUserInfo').then() //注意此时url的api前面不能加/
 
 &emsp;
 ***
-## 8.vue中的动画
+# 6.vue中的动画
 ### 1.使用过渡类名来实现动画
 （1）使用`transition`元素，把需要被动画控制的元素包裹起来
 （2）自定义两组样式来控制transition内部的元素来实现动画
@@ -358,3 +335,230 @@ var vm = new Vue({
     }
 ```
 
+&emsp;
+***
+# 7.组件
+- 模块化：是从代码逻辑的角度来划分的；方便代码分层开发，保证每个功能模块的职能单一
+- 组件化：是从UI界面的角度进行划分的，前端的组件化，方便UI组件的重用
+
+### 1.创建全局组件
+#### （1）Vue.extend + Vue.component
+1. Vue.extend创建组件，返回的是一个组件对象，template属性指定了要显示的HTML模板
+2. Vue.component第一个参数是组件名，第二个参数是组件对象，用1中的
+3. 在html中以标签的形式引入组件。标签名为组件名
+
+```js
+var myComponent = Vue.extend({
+  template: '<div>这是一个div</div>'
+})
+Vue.component('my-component',myComponent)
+```
+```html
+<my-component></my-component>
+```
+
+也可以简写：
+```js
+Vue.component('my-component',Vue.extend({
+  template: '<div>这是一个div</div>'
+}))
+```
+#### (2)Vue.component
+```js
+Vue.component('my-component',{
+  template:'<div><h3>标题</h3><p>段落</p></div>'  //注意：只能有一个根标签
+})
+```
+#### (3)抽离template，有点脚手架的味道了
+```js
+Vue.component('my-coponent',{
+  template:'#teml'
+})
+
+```
+```html
+<!--在html中写模板结构，指定id-->
+<template id="teml">
+  <div>
+  <h1>标题</h1><p>段落</p>  <!--只能有一个根标签-->
+  </div>
+</template>
+<!--引用模板-->
+<div id="app">
+  <my-component></my-component>
+</div>
+```
+### 2.创建私有组件（在vue实例的components对象中定义）
+```js
+  components:{
+  login: {
+    template:'<h1>这是login私有组件</h1>'
+  }
+  }
+  //可以简写
+  components:{
+  login
+  }
+```
+ 只能在对应vue实例中使用
+ 也可以参照上一小节抽离template
+### 3.组件中的data
+- 组件中的data与实例中的data不同，必须是一个带返回值的函数，应该这样写
+```js
+data(){
+  return {
+    msg:'这是组件中的data'
+  }
+}
+```
+- 为啥组件中的data必须要返回值
+不使用return包裹的数据会在项目的全局可见，会造成变量污染；使用return包裹后数据中变量只在当前组件中生效，不会影响其他组件。
+
+### 4.组件切换
+#### (1)v-if和v-else结合flag进行组件切换
+#### (2)用vue的component元素实现组件切换
+- component是一个占位符，:is属性指定了要展示的组件名
+`<component :is="'componentName'"></component> <!--注意组件名是字符串-->`
+代码实现：
+```html
+  <input type="button" value="组件1" @click="componentName='component1'">
+  <input type="button" value="组件2" @click="componentName='component2'">
+  <input type="button" value="组件3" @click="componentName='component3'">
+  <compontent :is="componentName"></compontent>
+```
+```js
+  Vue.component('component1',{
+    template:'<div style="width: 1000px;height: 300px;background-color: pink">组件1</div>'
+  })
+  Vue.component('component2',{
+    template:'<div style="width: 1000px;height: 300px;background-color: #86ffa3">组件2</div>'
+  })
+  Vue.component('component3',{
+    template:'<div style="width: 1000px;height: 300px;background-color: #11c4ff">组件3</div>'
+  })
+  var vm = new Vue({
+    el:'#app',
+    data:{
+      componentName:'component1' //默认显示组件1
+    }
+  })
+```
+#### (3)组件切换动画
+- 还是用transition标签，mode属性可以设置切换时候的模式
+- css要定义.v-enter,.v-leave-to{}和.v-enter-active,.v-leave-active{}两组样式
+```html
+<transition mode="out-in">
+<component :is="componentName"></component>
+</transition>
+```
+
+### 5.组件传值
+#### (1)父组件向子组件传值
+- 默认情况下子组件是访问不到父组件中的data值和methods方法的
+- 属性绑定+props申明
+```html
+<!--先属性绑定-->
+<my-component :parentmsg="msg"></my-component>  <!--msg是父组件上的data数据-->
+```
+还要在子组件的props数组申明一下接收到的数据的名字
+```js
+components:{
+  myComponent:{
+    template:'<h1>{{parentmsg}}</h1>',
+    props:['parentmsg']
+  }
+}
+```
+- props中的数据，都是父组件传递给子组件的，只读，无法重新赋值
+#### (2)父组件向子组件传递方法(子组件调用父组件方法)
+- 事件绑定+methods数组中调用
+```html
+<!--先事件绑定-->
+<my-component @func="show"></my-component>  <!--show方法是父组件上的方法-->
+```
+然后在子组件的methods数组通过this.$emit('func')来调用
+```js
+template:'<div><button @click="show">点击</button></div>', /*show这个方法名随意，与父组件无关*/
+methods: {
+  show(){
+    this.$emit('func')  //this是当前子组件，$emit()代表触发，参数为函数名字符串。若要传参，接着在第二个参数位置写
+  }
+}
+```
+#### (3)由2就可以引申出子组件向父组件传值
+```html
+<div id="app">
+  {{msgFromSon}}
+  <my-component @func="show"></my-component>  <!--show()不带参数-->
+</div>
+```
+```js
+var vm = new Vue({
+  el:'#app',
+  data:{
+    msgFromSon:null
+  },
+  methods:{
+    show(data){
+      this.msgFromSon = data;
+  }
+},
+components:{
+  myComponent:{
+    template:'<div><button @click="show">子组件向父组件传值</button></div>',
+    data(){
+      return {
+        msg: '子组件上的msg'
+      }
+    },
+    methods: {
+      show(){
+        this.$emit('func',this.msg)
+      }
+    }
+  }
+}})
+```
+#### (4)父组件调用子组件的data和msg：见下一节$refs
+### 6.使用ref获取dom元素和组件的引用(vue不推荐直接操作dom)
+- 在vue实例上有一个$refs对象，保存了指定ref值的dom对象
+- 可以在dom元素上指定ref值(ref="btn")，然后通过this.$refs.btn获取这个dom元素
+```html
+<p ref="text">这是一个文本<p>
+<button @click="getText">获取p标签的文本值</button>
+```
+```js
+methods:{
+  getText(){
+    console.log(this.$refs.text.innerText)
+  }
+}
+```
+- 同理，组件也可以使用ref来获取到。例如有个子组件的ref指定为"myComponment",data里有个msg，methods里面有个show()
+- 那么通过父组件通过this.$refs.myComponent.msg就可以获取到子组件的数据
+- 通过this.$refs.myComponent.show()可以调用子组件的方法
+
+
+&emsp;
+***
+# 8.路由
+- 前端通过hash(#)来实现路由
+### 1.vue-router的基本使用
+- 当导入了vue-router包之后，就有了一个路由的构造函数VueRouter
+- routes是路由匹配规则
+- 每个路由匹配规则都是一个对象，有两个必须的属性，path和component
+- path表示监听哪个路由链接地址，component表示路由匹配path时显示component对应的组件
+- `<router-view></router-view>`做路由挂载
+- ` <a href="#/login">登陆</a>     <a href="#/register">注册</a>`可以跳转。这样也可以实现组件切换
+```js
+var routerObj = new VueRouter({
+  routes:[ 
+  {path:'/login',component:login},
+  {path:'/register',component:register}
+  ]   
+})
+/*将router注册到vue实例*/
+var vm = new Vue({
+  router:routerObj
+})
+```
