@@ -550,15 +550,37 @@ methods:{
 - path表示监听哪个路由链接地址，component表示路由匹配path时显示component对应的组件
 - `<router-view></router-view>`做路由挂载
 - ` <a href="#/login">登陆</a>     <a href="#/register">注册</a>`可以跳转。这样也可以实现组件切换
+- 也可以使用`<router-link to="/login">登录</router-link>`来做路由跳转，默认渲染为a标签，若要渲染为其他，加tag。要设置选中路由的样式则设置.router-link-active
+- 路由切换若要使用动画，可以用transition把router-view包起来
 ```js
 var routerObj = new VueRouter({
   routes:[ 
+  {path:'/',redirect:'login'},/*根路径默认显示login组件*/
   {path:'/login',component:login},
   {path:'/register',component:register}
-  ]   
+  ],
+  linkActiveClass:'myactive' //链接激活时的样式，默认是.router-link-active
 })
 /*将router注册到vue实例*/
 var vm = new Vue({
   router:routerObj
 })
 ```
+### 2.路由传参
+#### (1)$route.query
+传值:
+`<router-link to="/login?id=10"></router-link>`
+取值:
+`this.$route.query.id`
+#### (2)$route.params
+传值:
+```js
+routes:[
+  {path:'/login/:id/:name',component:login}
+]
+```
+```html
+<router-link to="/login/10/陈俊"></router-link>
+```
+取值:
+`this.$route.params.id,this.$route.params.name`
