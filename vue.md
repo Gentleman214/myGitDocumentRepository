@@ -584,3 +584,86 @@ routes:[
 ```
 取值:
 `this.$route.params.id,this.$route.params.name`
+
+### 3.路由嵌套(chirdren)
+```html
+<router-link to="/account/login">登录</router-link>
+<router-view></router-view>
+```
+```js
+routes:[
+{
+  path:'/account',
+  component:account,
+  children:[
+    {path:'login',component:login}  //login前面不加/
+  ]
+}
+]
+```
+### 4.命名视图
+- router-view加name
+使用命名视图实现经典布局
+```html
+<router-view></router-view>
+<router-view name="leftBox"></router-view>
+<router-view name="mainBox"></router-view>
+```
+```js
+var router = new VueRouter({
+  routes:[
+    {path:'/',components:
+      { //记住这里是对象
+        'default':header,
+        'leftBox':leftBox,
+        'mainBox':mainBox
+      }
+    }
+  ]
+})
+```
+
+&emsp;
+***
+# 9.watch
+### 1.监听属性值变化
+- 可以监听data中指定数据的变化，然后触发watch对象中对应的function函数
+```js
+watch:{
+  msg:function(){   //当data上的msg变化时会执行函数
+    console.log('监视到了msg的变化')
+    }
+}
+```
+### 2.监听路由变化
+```js
+watch:{
+  '$route.path':function(newVal,oldVal){
+      console.log(oldVal+'->'+newVal)
+  }
+}
+```
+
+&emsp;
+***
+# 10.computed计算属性
+- 在computed对象中可以定义一些属性，这些属性叫做[计算属性],本质是一些方法。只不过调用的时候直接当做属性来用。
+- 只要计算属性函数内部调用的data数据发生改变，就会重新计算这个计算属性的属性。
+- 计算属性的求值结果会被缓存起来。
+```html
+<input type="text" v-model="firstname"/>+
+<input type="text" v-model="lastname"/>=
+<input type="text" v-model="fullname"/>
+<p>{{fullname}}</p>
+```
+```js
+data:{
+  firstname:'',
+  lastname:''
+},
+computed:{
+  fullname: function () {
+    return  this.firstname +"-"+ this.lastname
+  }
+}
+```
