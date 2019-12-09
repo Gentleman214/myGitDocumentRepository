@@ -23,7 +23,7 @@ module.exports = {
 ```json
 /*package.json*/
 "scripts":{
-"dev":"webpack" //script节点下的脚本，可以通过npm run执行
+"dev":"webpack" /*script节点下的脚本，可以通过npm run执行*/
 }
 ```
 &emsp;
