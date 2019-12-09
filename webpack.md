@@ -12,7 +12,7 @@
 - 使用
   - 安装 `npm i webpack webpack-cli -D`
   - 初始化 webpack.config.js
-  - 在package.json配置文件的scripts节点下，新增dev脚本(使用npm init -y 可以快速初始化一个包管理配置文件package.json)
+  - 在package.json配置文件的scripts节点下，新增dev脚本(使用npm init -y 可以快速初始化一个包管理配置文件package.json) /*script节点下的脚本，可以通过npm run执行*/
   - 使用`npm run dev`启动webpack进行项目打包
 ```js
 /*webpack.comfig.js*/
@@ -23,7 +23,7 @@ module.exports = {
 ```json
 /*package.json*/
 "scripts":{
-"dev":"webpack" /*script节点下的脚本，可以通过npm run执行*/
+"dev":"webpack"
 }
 ```
 &emsp;
