@@ -1,8 +1,0 @@
-
-啦啦啦啦啦 第一行
-sout("nihao"）
-var a=1;
-var b=2;
-bar c=3;
-var d=4;
-
