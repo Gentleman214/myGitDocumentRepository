@@ -162,3 +162,23 @@ module.exports {
 //limit用来指定图片的大小，单位是字节(byte)，只有小于limit大小的图片，才会被转为base64的图片
 ```
 ##### (6)打包处理js高级语法
+1. 安装babel转换器相关的包
+```bash
+npm i babel-loader @babel/core @babel/runtime -D
+```
+2. 安装babel语法相关的包
+```bash
+npm i @babel/preset-env @babel/plugin-transform-runtime @babel/plugin-proposal-class-properties -D
+```
+3. 在项目根目录中，创建babel配置文件babel.config.js，并初始化如下配置
+```js
+module.exports = {
+  presets: ['@babel/preset-env'],
+  plugins: ['@babel/plugin-transform-runtime','@babel/plugin-proposal-class-properties']
+}
+```
+4. 在webpack.config.js的module->rules数组中，添加loader规则如下
+```js
+{test:/\.js$/,use:'babel-loader',exclude:/node_modules/}
+//exclude为排除项，表示不处理node_modules下的js文件
+```
