@@ -87,14 +87,50 @@ git merge --no-ff -m "merge with no-ff" dev //表示禁用Fast forward
 #### 2.删除分支
 ```bash
 git branch -d dev
+git branch -D dev  //丢弃一个没有被合并过的分支，可以通过强行删除。
 ```
 #### 3."储藏"工作现场
 ```bash
 git stash
 git stash list  //查看储藏的工作现场
 git stash pop  //恢复的同时删除stash
+//如果有多个stash
+git stash list
+git stash apply stash@{0} //恢复指定的stash
+git stash drop  //删除stash
 ```
+####  4.赋值特定的提交到当前分支
+```bash
+git cherry-pick commitID
+```
+####  5.多人协作
+- 本地给远程库创建分支
+```bash
+git branch chenjun-dev  //创建分支
+git push origin chenjun-dev   //推送到远程，此时远程仓库就有了chenjun-dev分支
+git branch -a   //查看远程有多少个分支
+```
+- 查看远程库信息，使用：
+```bash
+git remote -v
+```
+- 从本地推送分支；
+```bash
+git push origin branch-name
+如果推送失败，先拉取远程的新提交
+git pull
+```
+- 在本地创建和远程分支对应的分支，本地和远程分支的名称最好一致；
+```bash
+git checkout -b branch-name origin/branch-name
+```
+
+建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
+
+从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
 ***
 ### 解决冲突
 git merge dev时如果有冲突，需要手动解决
+
+
 
