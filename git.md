@@ -28,6 +28,7 @@ git status  查看状态
 #### 1.查看历史记录
 ```bash
 git log
+git log -5   //查看5条提交记录
 git log --pretty=oneline   //一行显示
 git log --graph --pretty=oneline --abbrev-commit  //图状显示
 ```
@@ -88,6 +89,7 @@ git merge --no-ff -m "merge with no-ff" dev //表示禁用Fast forward
 ```bash
 git branch -d dev
 git branch -D dev  //丢弃一个没有被合并过的分支，可以通过强行删除。
+git push origin –delete dev //删除远程分支
 ```
 #### 3."储藏"工作现场
 ```bash
