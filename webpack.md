@@ -56,12 +56,33 @@ module.exports = {
 // --open 打包完成后自动打开浏览器
 // --host 配置ip地址
 // --port 配置端口号
+// --contentBase src  //指定浏览器打开时的入口文件
+// --hot 热启动
 "scripts":{
   "dev": "webpack-dev-server --open --host 127.0.0.1 --port 8888"
 }
+
+/*
+devServer 的第二种配置方式
+*/
+//webpack.config.js中的配置
+const webpack = require('webpack')  //启用热更新的第1步
+module.exports = {
+  devserver:{
+    open: true, //自动打开浏览器
+    port: 3000, //设置启动时的端口
+    contentBase: 'src', //指定托管的根目录
+    hot: true  //启用热更新第2步
+  }，
+  plugins: [  //启用热更新第3步，配置热更新插件
+    new webpack.HotModuleReplacementPlugin()  //new一个热更新的模块对象
+  ]
+}
+
 ```
 
 ### 3.webpack配置html-webpack-plugin生成预览页面
+自动把打包好的bundle.js添加到网页中
 - 安装生成预览页面的插件
   - `npm i html-webpack-plugin -D`
 - 修改webpack.config.js文件头部区域，添加如下配置信息
@@ -72,20 +93,20 @@ const htmlPlugin = new HtmlWebpackPlugin({
   filename: 'index.html' //指定生成的文件名称，该文件存在于内存中，在项目中不显示
 })
 ```
-- 修改webpack.config.js文件中向外暴露的配置对象，新增如下配置节点
+-  修改webpack.config.js文件中向外暴露的配置对象，新增如下配置节点
 ```js
 module.exports = {
   plugins: [htmlPlugin] //plugin数组是webpack打包期间会用到的一些插件列表
 }
 ```
-### 4.webpack中的加载器(打包非js模块)
+###  4.webpack中的加载器(打包非js模块)
 在实际开发中，webpack默认只能打包以js结尾的文件，非.js结尾的文件只能调用loader加载器才可以正常打包
 - less-loader可以打包处理.less相关的文件
 - sass-loader可以打包处理.sass相关的文件
 - url-loader可以打包处理css中与url路径相关的文件
 
 #### 1.webpack中加载器的基本使用
-##### (1)打包css文件
+##### (1)打包css文件(css-loader)
 1. 安装css文件的loader
 `npm i style-loader css-loader -D`
 2. 在webpack.config.js的module对象中添加rules数组，在rules数组中添加loader规则
@@ -98,9 +119,9 @@ module.exports {
   }
 }
 ```
-3.注意：多个loader的顺序是固定的，调用顺序是从后往前
+3. 注意：多个loader的顺序是固定的，调用顺序是从后往前
 
-##### (2)打包less文件
+##### (2)打包less文件(less-loader)
 1. 安装less文件的loader
 `npm i less-loader less -D`
 2. 在webpack.config.js的module对象中添加rules数组，在rules数组中添加loader规则
@@ -113,7 +134,7 @@ module.exports {
   }
 }
 ```
-##### (3)打包scss文件
+##### (3)打包scss文件(sass-loader)
 1. 安装scss文件的loader
 `npm i sass-loader node-sass -D`
 2. 添加loader规则
@@ -126,7 +147,7 @@ module.exports {
   }
 }
 ```
-##### (4)配置postCSS自动添加css的兼容前缀
+##### (4)配置postCSS自动添加css的兼容前缀(postcss-loader)
 1. `npm i postcss-loader autoprefixer -D`
 2. 在项目的根目录下创建postcss的postcss.config.js，并初始化如下配置
 ```js
@@ -145,7 +166,7 @@ module.exports {
   }
 }
 ```
-##### (5)打包样式表中的图片和字体文件
+##### (5)打包样式表中的图片和字体文件(url-loader)
 1. `npm i url-loader file-load -D`
 2. 修改loader规则
 ```js
@@ -154,14 +175,19 @@ module.exports {
     rules:[
       { 
       test:/\.jpg|png|gif|bmp|ttf|eot|svg|woff|woff2$/,
-      use: 'url-loader?limit=16940'}
+      use: 'url-loader?limit=16940'
+     // use: 'url-loader?limit=16940&name=[name].[ext]'
+     // use: 'url-loader?limit=16940&name=[hash:8]-[name].[ext]'
+      }
     ]
   }
 }
 //其中?之后的是loader的参数项
 //limit用来指定图片的大小，单位是字节(byte)，只有小于limit大小的图片，才会被转为base64的图片
+//name用来指定打包后的图片文件名name=[name].[ext]表示打包后文件名和后缀名都不变。如果不设置则是一段hash值。但是，同名即使图片路径不同也会显示一样的图片
+//第三种写法加了个hash值就可以解决第二种写法的问题
 ```
-##### (6)打包处理js高级语法
+#####  (6)打包处理js高级语法(babel-loader)
 1. 安装babel转换器相关的包
 ```bash
 npm i babel-loader @babel/core @babel/runtime -D
