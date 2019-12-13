@@ -1,17 +1,3 @@
-# notes
-
-### 1.给浏览器设token
-切换到console
-前端直接在浏览器中强制设置token
-document.cookie='token=63551fdc7cb04295bf8a810c4598b33e'
-
-
-  /*testApiHost: 'https://www.yaya.cn'*/
-  /*testApiHost: 'https://www.zlf.co'*/
-  /*testApiHost: 'https://www.iteng.com'*/
-  
-  
-  
 ***
 ***
 ## 编辑并提交代码
@@ -28,3 +14,30 @@ git add和git commit 可以简写为 git commit -am '',但 git commit -am 'updat
 
 ***
 ***
+
+
+
+# notes
+
+### 1.给浏览器设token
+切换到console
+前端直接在浏览器中强制设置token
+document.cookie='token=63551fdc7cb04295bf8a810c4598b33e'
+
+  /*testApiHost: 'https://www.yaya.cn'*/
+  /*testApiHost: 'https://www.zlf.co'*/
+  /*testApiHost: 'https://www.iteng.com'*/
+  
+  
+  
+### 2.export和export default的区别
+#### export
+1. export是按需导出，指定导出了哪个模块，用import接收时只能使用`import {} from ''`
+2. export可以向外暴露多个成员，import时按需导入
+3. export导出的成员，import接受名必须和导出名相同 `export var title = '导出'   import {title} from ''`
+4. 如果接收时想换个名称，可以使用import information as info from ''
+
+#### export default
+1. export default向外暴露的成员，可以使用任意变量来接收
+2. 在一个模块中，export default只允许向外暴露一次
+3. 可以同时使用export default和export
