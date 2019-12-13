@@ -111,7 +111,7 @@ module.exports = {
 `npm i style-loader css-loader -D`
 2. 在webpack.config.js的module对象中添加rules数组，在rules数组中添加loader规则
 ```js
-module.exports {
+module.exports = {
   module:{
     rules:[
       { test:/\.css$/,use: ['style-loader','css-loader']}
@@ -126,7 +126,7 @@ module.exports {
 `npm i less-loader less -D`
 2. 在webpack.config.js的module对象中添加rules数组，在rules数组中添加loader规则
 ```js
-module.exports {
+module.exports = {
   module:{
     rules:[
       { test:/\.less$/,use: ['style-loader','css-loader','less-loader']}
@@ -139,7 +139,7 @@ module.exports {
 `npm i sass-loader node-sass -D`
 2. 添加loader规则
 ```js
-module.exports {
+module.exports = {
   module:{
     rules:[
       { test:/\.scss$/,use: ['style-loader','css-loader','sass-loader']}
@@ -170,7 +170,7 @@ module.exports {
 1. `npm i url-loader file-load -D`
 2. 修改loader规则
 ```js
-module.exports {
+module.exports = {
   module:{
     rules:[
       { 
@@ -187,7 +187,7 @@ module.exports {
 //name用来指定打包后的图片文件名name=[name].[ext]表示打包后文件名和后缀名都不变。如果不设置则是一段hash值。但是，同名即使图片路径不同也会显示一样的图片
 //第三种写法加了个hash值就可以解决第二种写法的问题
 ```
-#####  (6)打包处理js高级语法(babel-loader)
+  #####  (6)打包处理js高级语法(babel-loader)
 1. 安装babel转换器相关的包
 ```bash
 npm i babel-loader @babel/core @babel/runtime -D
@@ -207,4 +207,80 @@ module.exports = {
 ```js
 {test:/\.js$/,use:'babel-loader',exclude:/node_modules/}
 //exclude为排除项，表示不处理node_modules下的js文件
+```
+##### (7)webpack打包vue
+- webpack导入vue
+```js
+/*webpack.config.js*/
+module.exports = {
+  resolve: {
+    alias: {  //修改vue被导入时的路径
+      'vue$': 'vue/dist/vue.js'
+    }
+  }
+}
+```
+1. 下载vue相关的loader包
+```bash
+npm i vue-loader vue-template-compiler -D
+```
+2. 在webpack.config.js中新增loader配置项
+```js
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+module.exports = {
+  module:{
+    rules:[
+      { test: /\.vue$/,use: 'vue-loader'}
+    ]
+  },
+  plugins: [
+    new VueLoaderPlugin()
+    ]
+}
+```
+- 总结：webpack中如何使用vue
+  - 1.安装vue的包 npm i vue -S
+  - 2.安装loader `npm i vue-loader vue-template-complier -D`
+  - 3.在main.js中导入vue模块
+  - 4.定义一个vue组件
+  - 5.导入组件
+  - 6.创建vm实例  var vm = new Vue({ el:'#app', render: p => p(login)})，render是重点
+  - 7.在页面中创建一个id为app的div挂载vm实例
+
+
+
+&emsp;
+***
+## 3.结合webpack使用vue-router
+- 先要装vue-router，`npm i vue-router -S`
+- 导入模块
+```js
+/*main.js*/
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
+var router = new VueRouter({
+  routes:[
+  { path:'', component: xxx}
+  ]
+})
+```
+- 可以抽离路由模块为router.js(脚手架里面也是这样写的)
+```js
+/*router.js*/
+import VueRouter from 'vue-router'
+/*导入组件*/
+
+var router = new VueRouter({
+  routes:[
+  { path:'', component: xxx}
+  ]
+})
+
+export default router //导出路由模块
+
+```
+```js
+/*main.js*/
+import router from './router.js'
 ```
