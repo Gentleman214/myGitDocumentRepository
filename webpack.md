@@ -51,19 +51,16 @@ module.exports = {
 - 将script脚本的引用路径src改为'/buldle.js'
 - 运行npm run dev
 #### 相关参数的配置
-```json
-"//": "
+```
 //package.json中的配置
 // --open 打包完成后自动打开浏览器
 // --host 配置ip地址
 // --port 配置端口号
 // --contentBase src  //指定浏览器打开时的入口文件
 // --hot 热启动
-"
 "scripts":{
   "dev": "webpack-dev-server --open --host 127.0.0.1 --port 8888"
 }
-
 /*
 devServer 的第二种配置方式
 */
@@ -80,7 +77,6 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()  //new一个热更新的模块对象
   ]
 }
-
 ```
 
 ### 3.webpack配置html-webpack-plugin生成预览页面
