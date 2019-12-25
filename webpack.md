@@ -51,7 +51,7 @@ module.exports = {
 - 将script脚本的引用路径src改为'/buldle.js'
 - 运行npm run dev
 #### 相关参数的配置
-```json
+```
 //package.json中的配置
 // --open 打包完成后自动打开浏览器
 // --host 配置ip地址
@@ -61,7 +61,6 @@ module.exports = {
 "scripts":{
   "dev": "webpack-dev-server --open --host 127.0.0.1 --port 8888"
 }
-
 /*
 devServer 的第二种配置方式
 */
@@ -78,7 +77,6 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()  //new一个热更新的模块对象
   ]
 }
-
 ```
 
 ### 3.webpack配置html-webpack-plugin生成预览页面
@@ -167,7 +165,7 @@ module.exports {
 }
 ```
 ##### (5)打包样式表中的图片和字体文件(url-loader)
-1. `npm i url-loader file-load -D`
+1. `npm i url-loader file-loader -D`
 2. 修改loader规则
 ```js
 module.exports = {
@@ -240,7 +238,7 @@ module.exports = {
 ```
 - 总结：webpack中如何使用vue
   - 1.安装vue的包 npm i vue -S
-  - 2.安装loader `npm i vue-loader vue-template-complier -D`
+  - 2.安装loader `npm i vue-loader vue-template-compiler -D`
   - 3.在main.js中导入vue模块
   - 4.定义一个vue组件
   - 5.导入组件
