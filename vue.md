@@ -33,8 +33,10 @@ v-else-if充当v-if的else-if块，可以链式的使用多次，可以更加方
 1.	属性绑定
 v-bind:name=”name”  //引号内的属性定义在data中，注意是引号而不是花括号
 2.	内联字符串拼接
-```javascript
+```html
 <a :herf=”‘http://’+addr”>跳转到百度</a>
+```
+```javascript
 data:{
 addr:”www.baidu.com”
 }
@@ -65,6 +67,15 @@ data:{ prop1:{background:'green'}, prop2:{fontSize:’25px’,fontWeight:’bold
 c.	多重值绑定：
 可以为style绑定中的属性提供一个包含多个值的数组，常用于提供多个带前缀的值，如果浏览器支持不带浏览器前缀的 flexbox，那么就只会渲染 display: flex
 `v-bind:style=”{display: [ ‘-webkit-box’, ‘-ms-flexbox’, ‘flex’ ]}”`
+
+5. 动态参数
+```html
+<a v-bind:[attributeName]="url"> ... </a>
+<!--如果你的 Vue 实例有一个 data 属性 attributeName，其值为 "href"，那么这个绑定将等价于 v-bind:href-->
+<a v-on:[eventName]="doSomething"> ... </a>
+<!--当 eventName 的值为 "focus" 时，v-on:[eventName] 将等价于 v-on:focus-->
+```
+
 
 ###### （12）v-model
 用于在表单上创建双向数据绑定
@@ -650,6 +661,7 @@ watch:{
 - 在computed对象中可以定义一些属性，这些属性叫做[计算属性],本质是一些方法。只不过调用的时候直接当做属性来用。
 - 只要计算属性函数内部调用的data数据发生改变，就会重新计算这个计算属性的属性。
 - 计算属性的求值结果会被缓存起来。
+- 计算属性函数调用的data数据时不可简写为箭头函数，因为箭头函数的this指向会继承父级作用域的上下文，此时指向的是window而不是vue实例
 ```html
 <input type="text" v-model="firstname"/>+
 <input type="text" v-model="lastname"/>=
@@ -666,4 +678,24 @@ computed:{
     return  this.firstname +"-"+ this.lastname
   }
 }
+```
+- 计算属性的setter和getter（默认只有getter，可以设置setter）
+```js
+// ...
+computed: {
+  fullName: {
+    // getter
+    get: function () {
+      return this.firstName + ' ' + this.lastName
+    },
+    // setter
+    set: function (newValue) {
+      var names = newValue.split(' ')
+      this.firstName = names[0]
+      this.lastName = names[names.length - 1]
+    }
+  }
+}
+// ...
+// 运行 vm.fullName = 'John Doe' 时，setter 会被调用，vm.firstName 和 vm.lastName 也会相应地被更新。
 ```
