@@ -193,8 +193,6 @@ directives:{
   - beforeDestory：销毁前。实例身上所有的data，methods,filters,directives...都还处于可用状态，实例还未被销毁。
   - destoryed：销毁后。组件已经被完全销毁了。组件中所有的东西都不可用了。
 
-图示：
-![Vue-lifeCycle](https://github.com/Gentleman214/myGitDocumentRepository/blob/master/image-storage/vue/vue-lifeCycle.png)
 
 &emsp;
 ***
